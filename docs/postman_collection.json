@@ -1,0 +1,451 @@
+{
+	"info": {
+		"_postman_id": "a9314c12-b91c-4b68-9f3a-7d4efb123456",
+		"name": "Portal CMS & Layanan Masyarakat API (v1)",
+		"description": "Koleksi REST API Backend Laravel 13 + Filament v5 untuk dikonsumsi frontend Flutter.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api/v1",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Posts (Artikel & Berita)",
+			"item": [
+				{
+					"name": "Daftar Artikel (Paginated)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/posts?page=1&per_page=10&category=&search=&featured=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "10"
+								},
+								{
+									"key": "category",
+									"value": "",
+									"description": "Slug atau ID kategori"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"description": "Kata kunci judul / ringkasan"
+								},
+								{
+									"key": "featured",
+									"value": "",
+									"description": "Set 1 untuk hanya artikel unggulan"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Detail Artikel by Slug",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/posts/:slug",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"posts",
+								":slug"
+							],
+							"variable": [
+								{
+									"key": "slug",
+									"value": "penerimaan-peserta-didik-baru-ppdb-tahun-ajaran-baru-dibuka"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Pages (Halaman Statis)",
+			"item": [
+				{
+					"name": "Detail Halaman by Slug",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/pages/:slug",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pages",
+								":slug"
+							],
+							"variable": [
+								{
+									"key": "slug",
+									"value": "tentang-kami"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Categories (Kategori)",
+			"item": [
+				{
+					"name": "Daftar Kategori Aktif",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					}
+				},
+				{
+					"name": "Detail Kategori by Slug",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/categories/:slug",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								":slug"
+							],
+							"variable": [
+								{
+									"key": "slug",
+									"value": "berita-terkini"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Slides (Banner Promosi)",
+			"item": [
+				{
+					"name": "Daftar Slide Aktif",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/slides",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"slides"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Menus (Navigasi)",
+			"item": [
+				{
+					"name": "Menu Header",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/menus/header",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"menus",
+								"header"
+							]
+						}
+					}
+				},
+				{
+					"name": "Menu Footer",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/menus/footer",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"menus",
+								"footer"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Settings (Profil Situs & Kontak)",
+			"item": [
+				{
+					"name": "Semua Pengaturan (Format List)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/settings?group=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"settings"
+							],
+							"query": [
+								{
+									"key": "group",
+									"value": "",
+									"description": "Filter grup: general, contact, social, footer"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Pengaturan Key-Value Map (Sangat cocok untuk Flutter)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/settings?format=map",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"settings"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "map"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Layanan Masyarakat (Topik & FAQ)",
+			"item": [
+				{
+					"name": "Daftar Topik Pertanyaan",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/question-topics",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"question-topics"
+							]
+						}
+					}
+				},
+				{
+					"name": "Daftar FAQ",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/faqs?topic=&search=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"faqs"
+							],
+							"query": [
+								{
+									"key": "topic",
+									"value": "",
+									"description": "Slug atau ID topik"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"description": "Kata kunci pencarian"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Layanan Masyarakat (Pertanyaan Publik)",
+			"item": [
+				{
+					"name": "Daftar Pertanyaan Publik Terjawab",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/questions?page=1&per_page=10&topic=&search=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"questions"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "10"
+								},
+								{
+									"key": "topic",
+									"value": ""
+								},
+								{
+									"key": "search",
+									"value": ""
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Kirim Pertanyaan Baru (Public Submission)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"topic_id\": 1,\n    \"name\": \"Ahmad Rifai\",\n    \"email\": \"ahmad@example.com\",\n    \"phone\": \"081298765432\",\n    \"subject\": \"Informasi Seragam Sekolah\",\n    \"body\": \"Apakah seragam sekolah disediakan langsung oleh pihak sekolah atau dibeli mandiri? Terima kasih.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/questions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"questions"
+							]
+						}
+					}
+				}
+			]
+		}
+	]
+}
+
