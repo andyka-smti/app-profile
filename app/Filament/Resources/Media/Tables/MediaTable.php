@@ -16,30 +16,30 @@ class MediaTable
         return $table
             ->columns([
                 ImageColumn::make('file_path')
-                    ->label('Preview')
+                    ->label(__('Preview'))
                     ->disk('public')
                     ->square(),
 
                 TextColumn::make('file_name')
-                    ->label('Nama File')
+                    ->label(__('File Name'))
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
 
                 TextColumn::make('mime_type')
-                    ->label('Tipe')
+                    ->label(__('Type'))
                     ->badge()
                     ->color('gray'),
 
                 TextColumn::make('human_file_size')
-                    ->label('Ukuran'),
+                    ->label(__('Size')),
 
                 TextColumn::make('user.name')
-                    ->label('Pengunggah')
+                    ->label(__('Uploader'))
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('created_at')
-                    ->label('Diunggah Pada')
+                    ->label(__('Uploaded At'))
                     ->dateTime('d M Y, H:i')
                     ->sortable(),
             ])

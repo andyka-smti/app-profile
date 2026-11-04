@@ -16,7 +16,7 @@ class SettingsTable
         return $table
             ->columns([
                 TextColumn::make('group')
-                    ->label('Grup')
+                    ->label(__('Group'))
                     ->badge()
                     ->colors([
                         'primary' => 'general',
@@ -29,36 +29,36 @@ class SettingsTable
                     ->searchable(),
 
                 TextColumn::make('key')
-                    ->label('Kunci (Key)')
+                    ->label(__('Key'))
                     ->fontFamily('mono')
                     ->searchable()
                     ->sortable(),
 
                 TextColumn::make('value')
-                    ->label('Nilai')
+                    ->label(__('Value'))
                     ->limit(50)
                     ->searchable(),
 
                 TextColumn::make('type')
-                    ->label('Tipe')
+                    ->label(__('Type'))
                     ->badge()
                     ->color('gray'),
 
                 TextColumn::make('updated_at')
-                    ->label('Terakhir Diubah')
+                    ->label(__('Last Modified'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('group')
-                    ->label('Filter Grup')
+                    ->label(__('Filter Group'))
                     ->options([
-                        'general' => 'General (Umum)',
-                        'contact' => 'Kontak',
-                        'social' => 'Media Sosial',
-                        'maps' => 'Peta & Lokasi',
-                        'footer' => 'Footer',
+                        'general' => __('General (General)'),
+                        'contact' => __('Contact'),
+                        'social' => __('Social Media'),
+                        'maps' => __('Maps & Location'),
+                        'footer' => __('Footer'),
                     ]),
             ])
             ->recordActions([

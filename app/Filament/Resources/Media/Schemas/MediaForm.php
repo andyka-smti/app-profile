@@ -16,8 +16,10 @@ class MediaForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                Section::make('Unggah File Media')
+                Section::make(__('Upload Media File'))
+                    ->columnSpanFull()
                     ->schema([
                         Grid::make(2)->schema([
                             Hidden::make('user_id')
@@ -31,7 +33,7 @@ class MediaForm
                             Hidden::make('file_size'),
 
                             FileUpload::make('file_path')
-                                ->label('Pilih File')
+                                ->label(__('Choose File'))
                                 ->directory('media')
                                 ->visibility('public')
                                 ->required()
@@ -46,13 +48,13 @@ class MediaForm
                                 ->columnSpanFull(),
 
                             TextInput::make('file_name')
-                                ->label('Nama File')
+                                ->label(__('File Name'))
                                 ->required()
                                 ->maxLength(255),
 
                             TextInput::make('alt_text')
-                                ->label('Teks Alternatif (Alt Text)')
-                                ->placeholder('Deskripsi gambar untuk aksesibilitas dan SEO')
+                                ->label(__('Alternative Text (Alt Text)'))
+                                ->placeholder(__('Image description for accessibility and SEO'))
                                 ->maxLength(255),
                         ]),
                     ]),

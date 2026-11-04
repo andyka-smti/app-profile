@@ -16,12 +16,14 @@ class QuestionTopicForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                Section::make('Informasi Topik Pertanyaan')
+                Section::make(__('Question Topic Information'))
+                    ->columnSpanFull()
                     ->schema([
                         Grid::make(2)->schema([
                             TextInput::make('name')
-                                ->label('Nama Topik')
+                                ->label(__('Topic Name'))
                                 ->required()
                                 ->maxLength(255)
                                 ->live(onBlur: true)
@@ -31,28 +33,28 @@ class QuestionTopicForm
                                 )),
 
                             TextInput::make('slug')
-                                ->label('Slug URL')
+                                ->label(__('URL Slug'))
                                 ->required()
                                 ->unique(ignoreRecord: true)
                                 ->maxLength(255),
 
                             TextInput::make('icon')
-                                ->label('Ikon')
-                                ->placeholder('academic-cap, document-check, etc.')
+                                ->label(__('Icon'))
+                                ->placeholder(__('academic-cap, border-style, etc.'))
                                 ->maxLength(100),
 
                             TextInput::make('sort_order')
-                                ->label('Urutan')
+                                ->label(__('Sort Order'))
                                 ->numeric()
                                 ->default(0),
 
                             Toggle::make('is_active')
-                                ->label('Aktif')
+                                ->label(__('Active'))
                                 ->default(true)
                                 ->columnSpanFull(),
 
                             Textarea::make('description')
-                                ->label('Deskripsi')
+                                ->label(__('Description'))
                                 ->rows(3)
                                 ->columnSpanFull(),
                         ]),

@@ -15,50 +15,53 @@ class QuestionForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                Section::make('Identitas Penanya')
-                    ->description('Data diri masyarakat yang mengajukan pertanyaan')
+                Section::make(__('Inquirer Identity'))
+                    ->description(__('Public data of the person submitting the question'))
+                    ->columnSpanFull()
                     ->schema([
                         Grid::make(3)->schema([
                             TextInput::make('name')
-                                ->label('Nama Lengkap')
+                                ->label(__('Full Name'))
                                 ->required(),
 
                             TextInput::make('email')
-                                ->label('Alamat Email')
+                                ->label(__('Email Address'))
                                 ->email()
                                 ->required(),
 
                             TextInput::make('phone')
-                                ->label('Nomor WhatsApp / Telp')
+                                ->label(__('WhatsApp / Phone Number'))
                                 ->tel(),
                         ]),
                     ]),
 
-                Section::make('Isi Pertanyaan')
+                Section::make(__('Question Details'))
+                    ->columnSpanFull()
                     ->schema([
                         Grid::make(2)->schema([
                             Select::make('topic_id')
-                                ->label('Topik Pertanyaan')
+                                ->label(__('Question Topic'))
                                 ->relationship('topic', 'name')
                                 ->searchable()
                                 ->preload()
                                 ->native(false),
 
                             Select::make('status')
-                                ->label('Status Pertanyaan')
+                                ->label(__('Question Status'))
                                 ->options(QuestionStatus::class)
                                 ->default(QuestionStatus::Pending)
                                 ->required()
                                 ->native(false),
 
                             TextInput::make('subject')
-                                ->label('Subjek Pertanyaan')
+                                ->label(__('Question Subject'))
                                 ->required()
                                 ->columnSpanFull(),
 
                             Textarea::make('body')
-                                ->label('Uraian Pertanyaan')
+                                ->label(__('Question Description'))
                                 ->rows(5)
                                 ->required()
                                 ->columnSpanFull(),

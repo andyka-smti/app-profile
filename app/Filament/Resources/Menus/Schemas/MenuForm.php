@@ -18,34 +18,37 @@ class MenuForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                Section::make('Informasi Menu')
+                Section::make(__('Menu Information'))
+                    ->columnSpanFull()
                     ->schema([
                         Grid::make(2)->schema([
                             TextInput::make('name')
-                                ->label('Nama Menu')
+                                ->label(__('Menu Name'))
                                 ->required()
                                 ->maxLength(255),
 
                             Select::make('location')
-                                ->label('Lokasi Penempatan')
+                                ->label(__('Placement Location'))
                                 ->options([
-                                    'header' => 'Header (Navigasi Atas)',
-                                    'footer' => 'Footer (Navigasi Bawah)',
-                                    'sidebar' => 'Sidebar (Bilah Samping)',
+                                    'header' => __('Header (Top Navigation)'),
+                                    'footer' => __('Footer (Bottom Navigation)'),
+                                    'sidebar' => __('Sidebar (Side Navigation)'),
                                 ])
                                 ->required()
                                 ->native(false),
 
                             Toggle::make('is_active')
-                                ->label('Menu Aktif')
+                                ->label(__('Active Menu'))
                                 ->default(true)
                                 ->columnSpanFull(),
                         ]),
                     ]),
 
-                Section::make('Daftar Item Menu')
-                    ->description('Kelola tautan dan item navigasi pada menu ini')
+                Section::make(__('Menu Item List'))
+                    ->description(__('Manage navigation links and items in this menu'))
+                    ->columnSpanFull()
                     ->schema([
                         Repeater::make('items')
                             ->relationship('items')
@@ -55,15 +58,15 @@ class MenuForm
                             ->schema([
                                 Grid::make(3)->schema([
                                     TextInput::make('label')
-                                        ->label('Label Menu')
+                                        ->label(__('Menu Label'))
                                         ->required(),
 
                                     Select::make('type')
-                                        ->label('Tipe Tautan')
+                                        ->label(__('Link Type'))
                                         ->options([
-                                            'custom' => 'Tautan Kustom / URL',
-                                            'page' => 'Halaman Statis',
-                                            'category' => 'Kategori Post',
+                                            'custom' => __('Custom Link / URL'),
+                                            'page' => __('Static Page'),
+                                            'category' => __('Post Category'),
                                         ])
                                         ->default('custom')
                                         ->required()
@@ -71,30 +74,30 @@ class MenuForm
                                         ->native(false),
 
                                     TextInput::make('url')
-                                        ->label('URL Tujuan')
-                                        ->placeholder('/tentang-kami atau https://...')
+                                        ->label(__('Target URL'))
+                                        ->placeholder(__('/about-us or https://...'))
                                         ->required(fn (Get $get) => $get('type') === 'custom')
                                         ->visible(fn (Get $get) => $get('type') === 'custom'),
 
                                     Select::make('linkable_id')
-                                        ->label('Pilih Halaman')
+                                        ->label(__('Select Page'))
                                         ->options(fn () => Page::pluck('title', 'id'))
                                         ->searchable()
                                         ->visible(fn (Get $get) => $get('type') === 'page'),
 
                                     Select::make('linkable_id')
-                                        ->label('Pilih Kategori')
+                                        ->label(__('Select Category'))
                                         ->options(fn () => Category::pluck('name', 'id'))
                                         ->searchable()
                                         ->visible(fn (Get $get) => $get('type') === 'category'),
 
                                     TextInput::make('sort_order')
-                                        ->label('Urutan')
+                                        ->label(__('Sort Order'))
                                         ->numeric()
                                         ->default(0),
 
                                     Toggle::make('is_active')
-                                        ->label('Aktif')
+                                        ->label(__('Active'))
                                         ->default(true),
                                 ]),
                             ])

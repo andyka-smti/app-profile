@@ -421,7 +421,27 @@ routes/
 | File Storage | Laravel Filesystem (local/S3) |
 | Notifikasi | Laravel Notifications (email) |
 | API Documentation | Scramble / Postman Collection |
+| Localization | Laravel-Lang (id) & Filament LanguageSwitch |
 | Frontend (terpisah) | Flutter (mobile & web) |
+
+---
+
+## 🌐 Lokalisasi Bilingual (Indonesia & Inggris) & Optimasi Layout
+
+- [x] Instalasi paket `laravel-lang/common` via Composer.
+- [x] Eksekusi perintah `php artisan lang:add id` dan `php artisan lang:add en`.
+- [x] Kamus terjemahan bilingual lengkap untuk istilah aplikasi pada `lang/id.json` dan `lang/en.json`.
+- [x] Seluruh Filament Resource (`PostResource`, `PageResource`, `CategoryResource`, `MediaResource`, `MenuResource`, `SlideResource`, `SettingResource`, `QuestionResource`, `QuestionTopicResource`, `FaqResource`, `UserResource`) menggunakan method dinamis `getModelLabel()`, `getPluralModelLabel()`, dan `getNavigationGroup()` yang responsif terhadap locale aktif (`id` / `en`).
+- [x] Konfigurasi `.env` dan `config/app.php`:
+  - `APP_LOCALE=id` (default utama Indonesia)
+  - `APP_FALLBACK_LOCALE=id`
+  - `APP_FAKER_LOCALE=id_ID`
+  - `APP_TIMEZONE=Asia/Jakarta`
+- [x] Konfigurasi `LanguageSwitch` pada `AppServiceProvider` untuk pergantian bahasa `id` dan `en` secara langsung (dengan cookie & session persist).
+- [x] Penyesuaian layout lebar layar penuh (**Full Width**) di Filament Panel:
+  - `AdminPanelProvider::maxContentWidth(Width::Full)` untuk memperluas kontainer admin panel di resolusi tinggi/layar lebar.
+  - Perbaikan skema formulir (`PostForm`, `PageForm`, `CategoryForm`, `SettingForm`, `MediaForm`, `MenuForm`, `SlideForm`, `QuestionForm`, `QuestionTopicForm`, `FaqForm`, `UserForm`) agar kartu dan kolom memenuhi 100% lebar kontainer (mengatasi pembatasan 50% default akibat pembagian grid).
+- [x] Pengujian otomatis PHPUnit Feature Tests: 23 pengujian berhasil lulus.
 
 ---
 

@@ -16,46 +16,48 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Notification;
 
 class AnswersRelationManager extends RelationManager
 {
     protected static string $relationship = 'answers';
 
-    protected static ?string $title = 'Tanggapan / Jawaban Petugas';
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return __('Officer Responses / Answers');
+    }
 
     public function form(Schema $schema): Schema
     {
         return $schema
+            ->columns(2)
             ->components([
-                Grid::make(2)->schema([
-                    Hidden::make('user_id')
-                        ->default(fn () => auth()->id()),
+                Hidden::make('user_id')
+                    ->default(fn () => auth()->id()),
 
-                    Hidden::make('answered_at')
-                        ->default(fn () => now()),
+                Hidden::make('answered_at')
+                    ->default(fn () => now()),
 
-                    Select::make('status')
-                        ->label('Status Jawaban')
-                        ->options(QuestionAnswerStatus::class)
-                        ->default(QuestionAnswerStatus::Published)
-                        ->required()
-                        ->native(false),
+                Select::make('status')
+                    ->label(__('Answer Status'))
+                    ->options(QuestionAnswerStatus::class)
+                    ->default(QuestionAnswerStatus::Published)
+                    ->required()
+                    ->native(false),
 
-                    Toggle::make('is_published')
-                        ->label('Publikasikan ke Publik')
-                        ->default(true),
+                Toggle::make('is_published')
+                    ->label(__('Publish to Public'))
+                    ->default(true),
 
-                    RichEditor::make('body')
-                        ->label('Isi Tanggapan / Jawaban')
-                        ->required()
-                        ->columnSpanFull(),
-                ]),
+                RichEditor::make('body')
+                    ->label(__('Response / Answer Content'))
+                    ->required()
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -65,30 +67,30 @@ class AnswersRelationManager extends RelationManager
             ->recordTitleAttribute('body')
             ->columns([
                 TextColumn::make('user.name')
-                    ->label('Petugas Penjawab')
+                    ->label(__('Responding Officer'))
                     ->weight('bold'),
 
                 TextColumn::make('body')
-                    ->label('Isi Tanggapan')
+                    ->label(__('Response Content'))
                     ->html()
                     ->limit(70),
 
                 TextColumn::make('status')
-                    ->label('Status')
+                    ->label(__('Status'))
                     ->badge(),
 
                 IconColumn::make('is_published')
-                    ->label('Publik')
+                    ->label(__('Public'))
                     ->boolean(),
 
                 TextColumn::make('answered_at')
-                    ->label('Waktu Menjawab')
+                    ->label(__('Answer Time'))
                     ->dateTime('d M Y, H:i')
                     ->sortable(),
             ])
             ->headerActions([
                 CreateAction::make()
-                    ->label('Tulis Jawaban')
+                    ->label(__('Write Answer'))
                     ->after(function (QuestionAnswer $record) {
                         $question = $this->getOwnerRecord();
                         $question->update(['status' => QuestionStatus::Answered]);

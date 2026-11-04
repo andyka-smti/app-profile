@@ -16,12 +16,14 @@ class SlideForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                Section::make('Informasi Slide Banner')
+                Section::make(__('Slide Banner Information'))
+                    ->columnSpanFull()
                     ->schema([
                         Grid::make(2)->schema([
                             FileUpload::make('image')
-                                ->label('Gambar Slide (Landscape disarankan)')
+                                ->label(__('Slide Image (Landscape recommended)'))
                                 ->image()
                                 ->directory('slides')
                                 ->visibility('public')
@@ -29,32 +31,32 @@ class SlideForm
                                 ->columnSpanFull(),
 
                             TextInput::make('title')
-                                ->label('Judul Banner')
+                                ->label(__('Banner Title'))
                                 ->required()
                                 ->maxLength(255),
 
                             TextInput::make('link_url')
-                                ->label('Tautan Tujuan (Opsional)')
-                                ->placeholder('https://... atau /posts/...')
+                                ->label(__('Target Link (Optional)'))
+                                ->placeholder(__('https://... or /posts/...'))
                                 ->maxLength(255),
 
                             DatePicker::make('start_date')
-                                ->label('Tanggal Mulai Tayang'),
+                                ->label(__('Start Date')),
 
                             DatePicker::make('end_date')
-                                ->label('Tanggal Selesai Tayang'),
+                                ->label(__('End Date')),
 
                             TextInput::make('sort_order')
-                                ->label('Urutan')
+                                ->label(__('Sort Order'))
                                 ->numeric()
                                 ->default(0),
 
                             Toggle::make('is_active')
-                                ->label('Aktif')
+                                ->label(__('Active'))
                                 ->default(true),
 
                             Textarea::make('description')
-                                ->label('Deskripsi Singkat')
+                                ->label(__('Short Description'))
                                 ->rows(3)
                                 ->columnSpanFull(),
                         ]),

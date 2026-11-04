@@ -9,7 +9,6 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
@@ -20,62 +19,61 @@ class PageForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->columns(['default' => 1, 'lg' => 3])
             ->components([
-                Grid::make(3)->schema([
-                    Section::make('Konten Halaman')
-                        ->schema([
-                            Hidden::make('user_id')
-                                ->default(fn () => auth()->id()),
+                Section::make(__('Page Content'))
+                    ->schema([
+                        Hidden::make('user_id')
+                            ->default(fn () => auth()->id()),
 
-                            TextInput::make('title')
-                                ->label('Judul Halaman')
-                                ->required()
-                                ->maxLength(255)
-                                ->live(onBlur: true)
-                                ->afterStateUpdated(fn (Set $set, ?string $state) => $set(
-                                    'slug',
-                                    Str::slug($state ?? '')
-                                )),
+                        TextInput::make('title')
+                            ->label(__('Page Title'))
+                            ->required()
+                            ->maxLength(255)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set(
+                                'slug',
+                                Str::slug($state ?? '')
+                            )),
 
-                            TextInput::make('slug')
-                                ->label('Slug URL')
-                                ->required()
-                                ->unique(ignoreRecord: true)
-                                ->maxLength(255),
+                        TextInput::make('slug')
+                            ->label(__('URL Slug'))
+                            ->required()
+                            ->unique(ignoreRecord: true)
+                            ->maxLength(255),
 
-                            RichEditor::make('content')
-                                ->label('Isi Konten Halaman')
-                                ->required()
-                                ->columnSpanFull(),
-                        ])
-                        ->columnSpan(2),
+                        RichEditor::make('content')
+                            ->label(__('Page Body Content'))
+                            ->required()
+                            ->columnSpanFull(),
+                    ])
+                    ->columnSpan(['default' => 1, 'lg' => 2]),
 
-                    Section::make('Pengaturan & Banner')
-                        ->schema([
-                            Select::make('status')
-                                ->label('Status')
-                                ->options(PageStatus::class)
-                                ->default(PageStatus::Published)
-                                ->required()
-                                ->native(false),
+                Section::make(__('Settings & Banner'))
+                    ->schema([
+                        Select::make('status')
+                            ->label(__('Status'))
+                            ->options(PageStatus::class)
+                            ->default(PageStatus::Published)
+                            ->required()
+                            ->native(false),
 
-                            TextInput::make('sort_order')
-                                ->label('Urutan')
-                                ->numeric()
-                                ->default(0),
+                        TextInput::make('sort_order')
+                            ->label(__('Sort Order'))
+                            ->numeric()
+                            ->default(0),
 
-                            Toggle::make('show_in_menu')
-                                ->label('Tampilkan di Navigasi Menu')
-                                ->default(false),
+                        Toggle::make('show_in_menu')
+                            ->label(__('Show in Navigation Menu'))
+                            ->default(false),
 
-                            FileUpload::make('image')
-                                ->label('Gambar Banner')
-                                ->image()
-                                ->directory('pages')
-                                ->visibility('public'),
-                        ])
-                        ->columnSpan(1),
-                ]),
+                        FileUpload::make('image')
+                            ->label(__('Banner Image'))
+                            ->image()
+                            ->directory('pages')
+                            ->visibility('public'),
+                    ])
+                    ->columnSpan(['default' => 1, 'lg' => 1]),
             ]);
     }
 }

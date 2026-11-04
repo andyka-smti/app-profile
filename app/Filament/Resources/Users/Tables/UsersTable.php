@@ -18,23 +18,23 @@ class UsersTable
         return $table
             ->columns([
                 ImageColumn::make('avatar')
-                    ->label('Avatar')
+                    ->label(__('Avatar'))
                     ->circular()
                     ->defaultImageUrl(fn ($record) => 'https://ui-avatars.com/api/?name='.urlencode($record->name).'&background=random'),
 
                 TextColumn::make('name')
-                    ->label('Nama')
+                    ->label(__('Name'))
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
 
                 TextColumn::make('email')
-                    ->label('Email')
+                    ->label(__('Email'))
                     ->searchable()
                     ->sortable(),
 
                 TextColumn::make('role')
-                    ->label('Peran (Role)')
+                    ->label(__('Role'))
                     ->badge()
                     ->colors([
                         'danger' => UserRole::Admin->value,
@@ -44,13 +44,13 @@ class UsersTable
                     ->sortable(),
 
                 TextColumn::make('created_at')
-                    ->label('Terdaftar')
+                    ->label(__('Registered'))
                     ->dateTime('d M Y')
                     ->sortable(),
             ])
             ->filters([
                 SelectFilter::make('role')
-                    ->label('Filter Peran')
+                    ->label(__('Filter Role'))
                     ->options(UserRole::class),
             ])
             ->recordActions([

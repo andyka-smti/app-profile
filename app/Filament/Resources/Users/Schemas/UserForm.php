@@ -16,40 +16,42 @@ class UserForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                Section::make('Informasi Pengguna')
+                Section::make(__('User Information'))
+                    ->columnSpanFull()
                     ->schema([
                         Grid::make(2)->schema([
                             TextInput::make('name')
-                                ->label('Nama Lengkap')
+                                ->label(__('Full Name'))
                                 ->required()
                                 ->maxLength(255),
 
                             TextInput::make('email')
-                                ->label('Alamat Email')
+                                ->label(__('Email Address'))
                                 ->email()
                                 ->required()
                                 ->unique(ignoreRecord: true)
                                 ->maxLength(255),
 
                             Select::make('role')
-                                ->label('Peran / Hak Akses')
+                                ->label(__('Role / Access Rights'))
                                 ->options(UserRole::class)
                                 ->default(UserRole::Editor)
                                 ->required()
                                 ->native(false),
 
                             TextInput::make('password')
-                                ->label('Password')
+                                ->label(__('Password'))
                                 ->password()
                                 ->dehydrateStateUsing(fn (?string $state): ?string => filled($state) ? Hash::make($state) : null)
                                 ->dehydrated(fn (?string $state): bool => filled($state))
                                 ->required(fn (string $operation): bool => $operation === 'create')
                                 ->maxLength(255)
-                                ->helperText('Kosongkan jika tidak ingin mengubah password saat edit'),
+                                ->helperText(__('Leave blank if you do not want to change the password when editing')),
 
                             FileUpload::make('avatar')
-                                ->label('Foto Profil (Avatar)')
+                                ->label(__('Profile Photo (Avatar)'))
                                 ->avatar()
                                 ->directory('avatars')
                                 ->visibility('public')

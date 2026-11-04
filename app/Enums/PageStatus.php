@@ -2,24 +2,37 @@
 
 namespace App\Enums;
 
-enum PageStatus: string
+use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasLabel;
+
+enum PageStatus: string implements HasColor, HasLabel
 {
     case Draft = 'draft';
     case Published = 'published';
 
-    public function label(): string
+    public function getLabel(): ?string
     {
         return match ($this) {
-            self::Draft => 'Draft',
-            self::Published => 'Dipublikasikan',
+            self::Draft => __('Draft'),
+            self::Published => __('Published'),
         };
     }
 
-    public function color(): string
+    public function label(): string
+    {
+        return $this->getLabel() ?? $this->value;
+    }
+
+    public function getColor(): string|array|null
     {
         return match ($this) {
             self::Draft => 'gray',
             self::Published => 'success',
         };
+    }
+
+    public function color(): string
+    {
+        return (string) $this->getColor();
     }
 }

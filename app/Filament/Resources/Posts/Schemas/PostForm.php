@@ -11,7 +11,6 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
@@ -22,75 +21,74 @@ class PostForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->columns(['default' => 1, 'lg' => 3])
             ->components([
-                Grid::make(3)->schema([
-                    Section::make('Konten Artikel')
-                        ->schema([
-                            Hidden::make('user_id')
-                                ->default(fn () => auth()->id()),
+                Section::make(__('Post Content'))
+                    ->schema([
+                        Hidden::make('user_id')
+                            ->default(fn () => auth()->id()),
 
-                            TextInput::make('title')
-                                ->label('Judul Artikel')
-                                ->required()
-                                ->maxLength(255)
-                                ->live(onBlur: true)
-                                ->afterStateUpdated(fn (Set $set, ?string $state) => $set(
-                                    'slug',
-                                    Str::slug($state ?? '')
-                                )),
+                        TextInput::make('title')
+                            ->label(__('Post Title'))
+                            ->required()
+                            ->maxLength(255)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set(
+                                'slug',
+                                Str::slug($state ?? '')
+                            )),
 
-                            TextInput::make('slug')
-                                ->label('Slug URL')
-                                ->required()
-                                ->unique(ignoreRecord: true)
-                                ->maxLength(255),
+                        TextInput::make('slug')
+                            ->label(__('URL Slug'))
+                            ->required()
+                            ->unique(ignoreRecord: true)
+                            ->maxLength(255),
 
-                            Textarea::make('summary')
-                                ->label('Ringkasan Singkat')
-                                ->rows(3)
-                                ->placeholder('Ringkasan artikel untuk preview...')
-                                ->columnSpanFull(),
+                        Textarea::make('summary')
+                            ->label(__('Short Summary'))
+                            ->rows(3)
+                            ->placeholder(__('Article summary for preview...'))
+                            ->columnSpanFull(),
 
-                            RichEditor::make('content')
-                                ->label('Isi Artikel')
-                                ->required()
-                                ->columnSpanFull(),
-                        ])
-                        ->columnSpan(2),
+                        RichEditor::make('content')
+                            ->label(__('Article Content'))
+                            ->required()
+                            ->columnSpanFull(),
+                    ])
+                    ->columnSpan(['default' => 1, 'lg' => 2]),
 
-                    Section::make('Publikasi & Pengaturan')
-                        ->schema([
-                            Select::make('category_id')
-                                ->label('Kategori')
-                                ->relationship('category', 'name')
-                                ->searchable()
-                                ->preload()
-                                ->native(false),
+                Section::make(__('Publication & Settings'))
+                    ->schema([
+                        Select::make('category_id')
+                            ->label(__('Category'))
+                            ->relationship('category', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->native(false),
 
-                            Select::make('status')
-                                ->label('Status')
-                                ->options(PostStatus::class)
-                                ->default(PostStatus::Draft)
-                                ->required()
-                                ->native(false),
+                        Select::make('status')
+                            ->label(__('Status'))
+                            ->options(PostStatus::class)
+                            ->default(PostStatus::Draft)
+                            ->required()
+                            ->native(false),
 
-                            DateTimePicker::make('published_at')
-                                ->label('Tanggal Tayang')
-                                ->default(now()),
+                        DateTimePicker::make('published_at')
+                            ->label(__('Publish Date'))
+                            ->default(now()),
 
-                            FileUpload::make('image')
-                                ->label('Gambar Utama')
-                                ->image()
-                                ->directory('posts')
-                                ->visibility('public')
-                                ->imageEditor(),
+                        FileUpload::make('image')
+                            ->label(__('Featured Image'))
+                            ->image()
+                            ->directory('posts')
+                            ->visibility('public')
+                            ->imageEditor(),
 
-                            Toggle::make('is_featured')
-                                ->label('Jadikan Unggulan (Featured)')
-                                ->helperText('Artikel akan diprioritaskan di beranda'),
-                        ])
-                        ->columnSpan(1),
-                ]),
+                        Toggle::make('is_featured')
+                            ->label(__('Make Featured'))
+                            ->helperText(__('Article will be prioritized on homepage')),
+                    ])
+                    ->columnSpan(['default' => 1, 'lg' => 1]),
             ]);
     }
 }

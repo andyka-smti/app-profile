@@ -16,7 +16,10 @@ class LatestPostsWidget extends TableWidget
 
     protected int|string|array $columnSpan = 'full';
 
-    protected static ?string $heading = 'Artikel & Berita Terbaru';
+    protected function getTableHeading(): string
+    {
+        return __('Latest Articles & News');
+    }
 
     public function table(Table $table): Table
     {
@@ -24,30 +27,30 @@ class LatestPostsWidget extends TableWidget
             ->query(fn (): Builder => Post::with('category')->latest()->limit(5))
             ->columns([
                 TextColumn::make('title')
-                    ->label('Judul Artikel')
+                    ->label(__('Post Title'))
                     ->weight('bold')
                     ->limit(50),
 
                 TextColumn::make('category.name')
-                    ->label('Kategori')
+                    ->label(__('Category'))
                     ->badge()
                     ->color('info'),
 
                 TextColumn::make('status')
-                    ->label('Status')
+                    ->label(__('Status'))
                     ->badge(),
 
                 TextColumn::make('view_count')
-                    ->label('Dilihat')
+                    ->label(__('Views'))
                     ->numeric(),
 
                 TextColumn::make('published_at')
-                    ->label('Tanggal Tayang')
+                    ->label(__('Publish Date'))
                     ->dateTime('d M Y, H:i'),
             ])
             ->recordActions([
                 Action::make('edit')
-                    ->label('Edit')
+                    ->label(__('Edit'))
                     ->icon('heroicon-m-pencil-square')
                     ->url(fn (Post $record): string => PostResource::getUrl('edit', ['record' => $record])),
             ])

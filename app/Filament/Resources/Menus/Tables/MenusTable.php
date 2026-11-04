@@ -17,13 +17,13 @@ class MenusTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Nama Menu')
+                    ->label(__('Menu Name'))
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
 
                 TextColumn::make('location')
-                    ->label('Lokasi')
+                    ->label(__('Location'))
                     ->badge()
                     ->colors([
                         'primary' => 'header',
@@ -33,27 +33,27 @@ class MenusTable
                     ->sortable(),
 
                 TextColumn::make('items_count')
-                    ->label('Jumlah Item')
+                    ->label(__('Item Count'))
                     ->counts('items')
                     ->badge()
                     ->color('info'),
 
                 ToggleColumn::make('is_active')
-                    ->label('Status Aktif')
+                    ->label(__('Active Status'))
                     ->sortable(),
 
                 TextColumn::make('updated_at')
-                    ->label('Diperbarui')
+                    ->label(__('Updated At'))
                     ->dateTime('d M Y, H:i')
                     ->sortable(),
             ])
             ->filters([
                 SelectFilter::make('location')
-                    ->label('Lokasi')
+                    ->label(__('Location'))
                     ->options([
-                        'header' => 'Header',
-                        'footer' => 'Footer',
-                        'sidebar' => 'Sidebar',
+                        'header' => __('Header'),
+                        'footer' => __('Footer'),
+                        'sidebar' => __('Sidebar'),
                     ]),
             ])
             ->recordActions([

@@ -20,59 +20,59 @@ class PostsTable
         return $table
             ->columns([
                 ImageColumn::make('image')
-                    ->label('Gambar')
+                    ->label(__('Featured Image'))
                     ->circular()
                     ->defaultImageUrl(url('/images/placeholder.png')),
 
                 TextColumn::make('title')
-                    ->label('Judul')
+                    ->label(__('Title'))
                     ->searchable()
                     ->sortable()
                     ->limit(45)
                     ->weight('bold'),
 
                 TextColumn::make('category.name')
-                    ->label('Kategori')
+                    ->label(__('Category'))
                     ->badge()
                     ->color('info')
                     ->sortable()
                     ->searchable(),
 
                 TextColumn::make('author.name')
-                    ->label('Penulis')
+                    ->label(__('Author'))
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('status')
-                    ->label('Status')
+                    ->label(__('Status'))
                     ->badge()
                     ->sortable(),
 
                 IconColumn::make('is_featured')
-                    ->label('Unggulan')
+                    ->label(__('Featured'))
                     ->boolean()
                     ->sortable(),
 
                 TextColumn::make('view_count')
-                    ->label('Dilihat')
+                    ->label(__('Views'))
                     ->numeric()
                     ->sortable(),
 
                 TextColumn::make('published_at')
-                    ->label('Tanggal Tayang')
+                    ->label(__('Publish Date'))
                     ->dateTime('d M Y, H:i')
                     ->sortable(),
             ])
             ->filters([
                 SelectFilter::make('status')
-                    ->label('Status')
+                    ->label(__('Status'))
                     ->options(PostStatus::class),
 
                 SelectFilter::make('category')
-                    ->label('Kategori')
+                    ->label(__('Category'))
                     ->relationship('category', 'name'),
 
                 TernaryFilter::make('is_featured')
-                    ->label('Artikel Unggulan'),
+                    ->label(__('Featured Articles')),
             ])
             ->recordActions([
                 EditAction::make(),

@@ -15,35 +15,37 @@ class FaqForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                Section::make('Informasi FAQ')
+                Section::make(__('FAQ Information'))
+                    ->columnSpanFull()
                     ->schema([
                         Grid::make(2)->schema([
                             Select::make('topic_id')
-                                ->label('Topik FAQ')
+                                ->label(__('FAQ Topic'))
                                 ->relationship('topic', 'name')
                                 ->searchable()
                                 ->preload()
                                 ->native(false),
 
                             TextInput::make('sort_order')
-                                ->label('Urutan Tampil')
+                                ->label(__('Display Order'))
                                 ->numeric()
                                 ->default(0),
 
                             Toggle::make('is_active')
-                                ->label('Aktif / Ditampilkan')
+                                ->label(__('Active / Displayed'))
                                 ->default(true)
                                 ->columnSpanFull(),
 
                             TextInput::make('question')
-                                ->label('Pertanyaan (Question)')
+                                ->label(__('Question (Question)'))
                                 ->required()
                                 ->maxLength(255)
                                 ->columnSpanFull(),
 
                             RichEditor::make('answer')
-                                ->label('Jawaban (Answer)')
+                                ->label(__('Answer (Answer)'))
                                 ->required()
                                 ->columnSpanFull(),
                         ]),

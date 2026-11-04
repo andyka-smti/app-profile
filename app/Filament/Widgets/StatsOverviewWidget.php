@@ -23,23 +23,23 @@ class StatsOverviewWidget extends BaseStatsOverviewWidget
         $totalPages = Page::count();
 
         return [
-            Stat::make('Artikel Dipublikasi', $publishedPosts)
-                ->description('Total artikel & berita aktif')
+            Stat::make(__('Published Posts'), $publishedPosts)
+                ->description(__('Total active articles & news'))
                 ->descriptionIcon('heroicon-m-document-text')
                 ->color('success'),
 
-            Stat::make('Pertanyaan Menunggu', $pendingQuestions)
-                ->description('Perlu respon dari petugas')
+            Stat::make(__('Pending Questions'), $pendingQuestions)
+                ->description(__('Requires response from officer'))
                 ->descriptionIcon('heroicon-m-clock')
                 ->color($pendingQuestions > 0 ? 'warning' : 'gray'),
 
-            Stat::make('Kategori Aktif', $totalCategories)
-                ->description('Pengelompokan artikel')
+            Stat::make(__('Active Categories'), $totalCategories)
+                ->description(__('Article categorization'))
                 ->descriptionIcon('heroicon-m-tag')
                 ->color('info'),
 
-            Stat::make('Halaman Statis', $totalPages)
-                ->description('Profil, visi-misi, dll.')
+            Stat::make(__('Static Pages'), $totalPages)
+                ->description(__('Profile, vision-mission, etc.'))
                 ->descriptionIcon('heroicon-m-document-duplicate')
                 ->color('primary'),
         ];

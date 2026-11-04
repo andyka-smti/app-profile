@@ -17,29 +17,31 @@ class SettingForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                Section::make('Informasi Pengaturan')
+                Section::make(__('Setting Information'))
+                    ->columnSpanFull()
                     ->schema([
                         Grid::make(2)->schema([
                             Select::make('group')
-                                ->label('Grup')
+                                ->label(__('Group'))
                                 ->options([
-                                    'general' => 'General (Umum)',
-                                    'contact' => 'Kontak',
-                                    'social' => 'Media Sosial',
-                                    'maps' => 'Peta & Lokasi',
-                                    'footer' => 'Footer',
+                                    'general' => __('General (General)'),
+                                    'contact' => __('Contact'),
+                                    'social' => __('Social Media'),
+                                    'maps' => __('Maps & Location'),
+                                    'footer' => __('Footer'),
                                 ])
                                 ->required()
                                 ->native(false),
 
                             Select::make('type')
-                                ->label('Tipe Nilai')
+                                ->label(__('Value Type'))
                                 ->options([
-                                    'text' => 'Teks Pendek',
-                                    'textarea' => 'Teks Panjang',
-                                    'image' => 'Gambar / Logo',
-                                    'boolean' => 'Boolean (1 / 0)',
+                                    'text' => __('Short Text'),
+                                    'textarea' => __('Long Text'),
+                                    'image' => __('Image / Logo'),
+                                    'boolean' => __('Boolean (1 / 0)'),
                                     'json' => 'JSON',
                                 ])
                                 ->default('text')
@@ -48,26 +50,26 @@ class SettingForm
                                 ->native(false),
 
                             TextInput::make('key')
-                                ->label('Kunci (Key)')
+                                ->label(__('Key'))
                                 ->required()
                                 ->unique(ignoreRecord: true)
                                 ->disabled(fn (?Setting $record) => $record !== null)
-                                ->helperText('Identifier unik, contoh: site_name, contact_email')
+                                ->helperText(__('Unique identifier, e.g.: site_name, contact_email'))
                                 ->columnSpanFull(),
 
                             TextInput::make('value')
-                                ->label('Nilai')
+                                ->label(__('Value'))
                                 ->visible(fn (Get $get) => in_array($get('type') ?? 'text', ['text', 'boolean', 'json']))
                                 ->columnSpanFull(),
 
                             Textarea::make('value')
-                                ->label('Nilai')
+                                ->label(__('Value'))
                                 ->rows(4)
                                 ->visible(fn (Get $get) => $get('type') === 'textarea')
                                 ->columnSpanFull(),
 
                             FileUpload::make('value')
-                                ->label('Gambar / File')
+                                ->label(__('Image / File'))
                                 ->image()
                                 ->directory('settings')
                                 ->visibility('public')
