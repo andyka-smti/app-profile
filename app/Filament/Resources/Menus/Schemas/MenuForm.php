@@ -81,13 +81,13 @@ class MenuForm
 
                                     Select::make('linkable_id')
                                         ->label(__('Select Page'))
-                                        ->options(fn () => Page::pluck('title', 'id'))
+                                        ->options(fn () => Page::all()->pluck('title', 'id'))
                                         ->searchable()
                                         ->visible(fn (Get $get) => $get('type') === 'page'),
 
                                     Select::make('linkable_id')
                                         ->label(__('Select Category'))
-                                        ->options(fn () => Category::pluck('name', 'id'))
+                                        ->options(fn () => Category::all()->pluck('name', 'id'))
                                         ->searchable()
                                         ->visible(fn (Get $get) => $get('type') === 'category'),
 

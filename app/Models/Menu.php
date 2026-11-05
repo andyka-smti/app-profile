@@ -7,11 +7,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
+use Spatie\Translatable\HasTranslations;
 
 #[Fillable(['name', 'location', 'is_active'])]
 class Menu extends Model
 {
     use HasFactory;
+    use HasTranslations;
+
+    /**
+     * @var list<string>
+     */
+    public array $translatable = [
+        'name',
+    ];
 
     protected static function booted(): void
     {

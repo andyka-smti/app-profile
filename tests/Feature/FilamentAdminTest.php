@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Enums\PostStatus;
+use App\Models\Post;
 use App\Models\User;
 use BezhanSalleh\LanguageSwitch\Http\Livewire\LanguageSwitchComponent;
 use Filament\Support\Enums\Width;
@@ -152,5 +154,38 @@ class FilamentAdminTest extends TestCase
         $this->actingAs($admin)->get('/admin/settings/create')->assertOk();
         $this->actingAs($admin)->get('/admin/faqs/create')->assertOk();
         $this->actingAs($admin)->get('/admin/users/create')->assertOk();
+    }
+
+    public function test_models_support_multilingual_translations(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $post = Post::create([
+            'user_id' => $admin->id,
+            'slug' => 'test-multilingual-post',
+            'title' => [
+                'id' => 'Judul Bahasa Indonesia',
+                'en' => 'English Post Title',
+            ],
+            'summary' => [
+                'id' => 'Ringkasan Bahasa Indonesia',
+                'en' => 'English Summary',
+            ],
+            'content' => [
+                'id' => '<p>Konten Bahasa Indonesia</p>',
+                'en' => '<p>English Content</p>',
+            ],
+            'status' => PostStatus::Published,
+            'published_at' => now(),
+        ]);
+
+        $this->assertSame('Judul Bahasa Indonesia', $post->getTranslation('title', 'id'));
+        $this->assertSame('English Post Title', $post->getTranslation('title', 'en'));
+
+        app()->setLocale('id');
+        $this->assertSame('Judul Bahasa Indonesia', $post->title);
+
+        app()->setLocale('en');
+        $this->assertSame('English Post Title', $post->title);
     }
 }

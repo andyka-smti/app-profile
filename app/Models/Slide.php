@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Spatie\Translatable\HasTranslations;
 
 #[Fillable([
     'title',
@@ -23,6 +24,16 @@ class Slide extends Model
 {
     /** @use HasFactory<SlideFactory> */
     use HasFactory;
+
+    use HasTranslations;
+
+    /**
+     * @var list<string>
+     */
+    public array $translatable = [
+        'title',
+        'description',
+    ];
 
     protected static function booted(): void
     {

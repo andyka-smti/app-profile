@@ -21,6 +21,7 @@ use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use LaraZeus\SpatieTranslatable\SpatieTranslatablePlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -36,6 +37,10 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->plugin(
+                SpatieTranslatablePlugin::make()
+                    ->defaultLocales(['id', 'en'])
+            )
             ->navigationGroups([
                 NavigationGroup::make(fn () => __('CMS Content')),
                 NavigationGroup::make(fn () => __('Navigation Menu')),

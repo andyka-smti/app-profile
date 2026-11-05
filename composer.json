@@ -9,6 +9,7 @@
         "php": "^8.3",
         "bezhansalleh/filament-language-switch": "^5.0",
         "filament/filament": "^5.11",
+        "lara-zeus/spatie-translatable": "*",
         "laravel/framework": "^13.17",
         "laravel/tinker": "^3.0"
     },
@@ -78,7 +79,7 @@
         }
     },
     "config": {
-        "optimize-autoloader": true,
+        "optimize-autoloader": false,
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
