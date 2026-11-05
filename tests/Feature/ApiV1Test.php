@@ -265,4 +265,44 @@ class ApiV1Test extends TestCase
             ->assertJsonPath('data.0.subject', 'Pertanyaan Terjawab')
             ->assertJsonPath('data.0.answer.officer_name', $user->name);
     }
+
+    public function test_api_v1_responds_in_requested_locale(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $post = Post::create([
+            'user_id' => $admin->id,
+            'title' => [
+                'id' => 'Judul Berita Indonesia',
+                'en' => 'English News Title',
+            ],
+            'slug' => 'berita-dwibahasa',
+            'summary' => [
+                'id' => 'Ringkasan ID',
+                'en' => 'Summary EN',
+            ],
+            'content' => [
+                'id' => 'Konten ID',
+                'en' => 'Content EN',
+            ],
+            'status' => PostStatus::Published,
+            'published_at' => now(),
+        ]);
+
+        // Request with Accept-Language: en
+        $responseEn = $this->withHeaders(['Accept-Language' => 'en'])
+            ->getJson('/api/v1/posts/berita-dwibahasa');
+
+        $responseEn->assertOk()
+            ->assertJsonPath('data.title', 'English News Title')
+            ->assertJsonPath('data.summary', 'Summary EN');
+
+        // Request with Accept-Language: id
+        $responseId = $this->withHeaders(['Accept-Language' => 'id'])
+            ->getJson('/api/v1/posts/berita-dwibahasa');
+
+        $responseId->assertOk()
+            ->assertJsonPath('data.title', 'Judul Berita Indonesia')
+            ->assertJsonPath('data.summary', 'Ringkasan ID');
+    }
 }
