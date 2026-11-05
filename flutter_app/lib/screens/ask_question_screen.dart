@@ -89,9 +89,14 @@ class _AskQuestionScreenState extends State<AskQuestionScreen> {
       appBar: AppBar(
         title: Text(l10n.askQuestion),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
+      body: Scrollbar(
+        thumbVisibility: true,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(
+            parent: BouncingScrollPhysics(),
+          ),
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -259,6 +264,7 @@ class _AskQuestionScreenState extends State<AskQuestionScreen> {
           ),
         ),
       ),
-    );
+    ),
+  );
   }
 }

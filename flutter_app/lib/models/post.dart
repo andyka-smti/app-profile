@@ -1,3 +1,4 @@
+import '../config/api_config.dart';
 import 'category.dart';
 
 class AuthorModel {
@@ -12,7 +13,7 @@ class AuthorModel {
     return AuthorModel(
       id: json['id'] as int?,
       name: json['name'] as String?,
-      avatar: json['avatar'] as String?,
+      avatar: ApiConfig.resolveImageUrl(json['avatar'] as String?),
     );
   }
 }
@@ -55,7 +56,7 @@ class PostModel {
       slug: json['slug'] as String? ?? '',
       summary: json['summary'] as String?,
       content: json['content'] as String? ?? '',
-      image: json['image'] as String?,
+      image: ApiConfig.resolveImageUrl(json['image'] as String?),
       status: json['status'] as String? ?? 'published',
       publishedAt: json['published_at'] != null
           ? DateTime.tryParse(json['published_at'] as String)

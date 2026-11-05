@@ -32,6 +32,7 @@ class PageSeeder extends Seeder
                 ],
                 'sort_order' => 1,
                 'show_in_menu' => true,
+                'image' => 'pages/page1.jpg',
             ],
             [
                 'title' => [
@@ -84,6 +85,7 @@ class PageSeeder extends Seeder
                     'status' => PageStatus::Published,
                     'sort_order' => $p['sort_order'],
                     'show_in_menu' => $p['show_in_menu'],
+                    'image' => $p['image'] ?? null,
                 ]
             );
         }

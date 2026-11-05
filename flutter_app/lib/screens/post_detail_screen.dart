@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../config/api_config.dart';
 import '../l10n/app_localizations.dart';
 import '../models/post.dart';
 import '../providers/portal_provider.dart';
@@ -80,9 +81,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           style: const TextStyle(fontSize: 16),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
+      body: Scrollbar(
+        thumbVisibility: true,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(
+            parent: BouncingScrollPhysics(),
+          ),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Category & Date Header
@@ -159,19 +165,27 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             const SizedBox(height: 16),
 
             // Featured Image
-            if (post.image != null && post.image!.isNotEmpty) ...[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(14),
-                child: Image.network(
-                  post.image!,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) =>
-                      const SizedBox.shrink(),
-                ),
-              ),
-              const SizedBox(height: 16),
-            ],
+            Builder(
+              builder: (context) {
+                final imageUrl = ApiConfig.resolveImageUrl(post.image);
+                if (imageUrl == null || imageUrl.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(14),
+                    child: Image.network(
+                      imageUrl,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const SizedBox.shrink(),
+                    ),
+                  ),
+                );
+              },
+            ),
 
             // Summary Quote (if available)
             if (post.summary != null && post.summary!.isNotEmpty) ...[
@@ -207,6 +221,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           ],
         ),
       ),
-    );
+    ),
+  );
   }
 }

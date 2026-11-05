@@ -1,3 +1,5 @@
+import '../config/api_config.dart';
+
 class SlideModel {
   final int id;
   final String title;
@@ -24,7 +26,7 @@ class SlideModel {
       id: json['id'] as int? ?? 0,
       title: json['title'] as String? ?? '',
       description: json['description'] as String?,
-      image: json['image'] as String?,
+      image: ApiConfig.resolveImageUrl(json['image'] as String?),
       linkUrl: json['link_url'] as String?,
       sortOrder: json['sort_order'] as int? ?? 0,
       startDate: json['start_date'] as String?,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import '../config/api_config.dart';
 import '../models/post.dart';
 
 class PostCard extends StatelessWidget {
@@ -22,6 +23,8 @@ class PostCard extends StatelessWidget {
   }
 
   Widget _buildVerticalCard(BuildContext context) {
+    final imageUrl = ApiConfig.resolveImageUrl(post.image);
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 1.5,
@@ -32,11 +35,11 @@ class PostCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (post.image != null && post.image!.isNotEmpty)
+            if (imageUrl != null && imageUrl.isNotEmpty)
               AspectRatio(
                 aspectRatio: 16 / 9,
                 child: Image.network(
-                  post.image!,
+                  imageUrl,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) =>
                       _buildPlaceholder(),
@@ -131,6 +134,8 @@ class PostCard extends StatelessWidget {
   }
 
   Widget _buildHorizontalCard(BuildContext context) {
+    final imageUrl = ApiConfig.resolveImageUrl(post.image);
+
     return Container(
       width: 250,
       margin: const EdgeInsets.only(right: 14),
@@ -145,9 +150,9 @@ class PostCard extends StatelessWidget {
             children: [
               AspectRatio(
                 aspectRatio: 16 / 9,
-                child: post.image != null && post.image!.isNotEmpty
+                child: imageUrl != null && imageUrl.isNotEmpty
                     ? Image.network(
-                        post.image!,
+                        imageUrl,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
                             _buildPlaceholder(),

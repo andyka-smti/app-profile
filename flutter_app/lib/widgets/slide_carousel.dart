@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../config/api_config.dart';
 import '../models/slide.dart';
 
 class SlideCarousel extends StatefulWidget {
@@ -80,15 +81,20 @@ class _SlideCarouselState extends State<SlideCarousel> {
                       fit: StackFit.expand,
                       children: [
                         // Background image or gradient
-                        if (slide.image != null && slide.image!.isNotEmpty)
-                          Image.network(
-                            slide.image!,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                _buildFallbackBanner(),
-                          )
-                        else
-                          _buildFallbackBanner(),
+                        Builder(
+                          builder: (context) {
+                            final imageUrl = ApiConfig.resolveImageUrl(slide.image);
+                            if (imageUrl != null && imageUrl.isNotEmpty) {
+                              return Image.network(
+                                imageUrl,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    _buildFallbackBanner(),
+                              );
+                            }
+                            return _buildFallbackBanner();
+                          },
+                        ),
 
                         // Gradient overlay
                         Container(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:provider/provider.dart';
+import '../config/api_config.dart';
 import '../models/page_model.dart';
 import '../providers/portal_provider.dart';
 import '../widgets/error_retry_view.dart';
@@ -73,24 +74,37 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
       appBar: AppBar(
         title: Text(page.title),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
+      body: Scrollbar(
+        thumbVisibility: true,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(
+            parent: BouncingScrollPhysics(),
+          ),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (page.image != null && page.image!.isNotEmpty) ...[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(14),
-                child: Image.network(
-                  page.image!,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) =>
-                      const SizedBox.shrink(),
-                ),
-              ),
-              const SizedBox(height: 16),
-            ],
+            Builder(
+              builder: (context) {
+                final imageUrl = ApiConfig.resolveImageUrl(page.image);
+                if (imageUrl == null || imageUrl.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(14),
+                    child: Image.network(
+                      imageUrl,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const SizedBox.shrink(),
+                    ),
+                  ),
+                );
+              },
+            ),
             Text(
               page.title,
               style: const TextStyle(
@@ -108,6 +122,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
           ],
         ),
       ),
-    );
+    ),
+  );
   }
 }

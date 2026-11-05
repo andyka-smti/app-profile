@@ -9,7 +9,9 @@ use App\Http\Controllers\Api\V1\QuestionController;
 use App\Http\Controllers\Api\V1\QuestionTopicController;
 use App\Http\Controllers\Api\V1\SettingController;
 use App\Http\Controllers\Api\V1\SlideController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,4 +52,31 @@ Route::prefix('v1')->group(function () {
     Route::post('/questions', [QuestionController::class, 'store'])
         ->middleware('throttle:6,1')
         ->name('api.v1.questions.store');
+
+    // Media & Storage with full CORS headers for Web & Mobile clients
+    Route::match(['get', 'head', 'options'], '/storage/{path}', function (Request $request, string $path) {
+        if ($request->isMethod('options')) {
+            return response('', 204, [
+                'Access-Control-Allow-Origin' => '*',
+                'Access-Control-Allow-Methods' => 'GET, HEAD, OPTIONS',
+                'Access-Control-Allow-Headers' => '*',
+            ]);
+        }
+
+        $disk = Storage::disk('public');
+        if (! $disk->exists($path)) {
+            abort(404);
+        }
+
+        $filePath = $disk->path($path);
+        $mimeType = $disk->mimeType($path) ?? 'application/octet-stream';
+
+        return response()->file($filePath, [
+            'Content-Type' => $mimeType,
+            'Access-Control-Allow-Origin' => '*',
+            'Access-Control-Allow-Methods' => 'GET, HEAD, OPTIONS',
+            'Access-Control-Allow-Headers' => '*',
+            'Cache-Control' => 'public, max-age=86400',
+        ]);
+    })->where('path', '.*')->name('api.v1.storage');
 });

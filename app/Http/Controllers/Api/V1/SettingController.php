@@ -28,7 +28,7 @@ class SettingController extends Controller
             foreach ($settings as $setting) {
                 $val = $setting->value;
                 if ($setting->type === 'image' && $val) {
-                    $val = url('storage/'.$val);
+                    $val = url('api/v1/storage/'.$val);
                 }
                 $map[$setting->key] = $val;
             }

@@ -26,6 +26,48 @@ class ApiConfig {
     }
   }
 
+  /// Resolves an image URL so it works seamlessly across web, desktop, emulator, and physical devices with CORS support.
+  static String? resolveImageUrl(String? rawUrl) {
+    if (rawUrl == null || rawUrl.trim().isEmpty) return null;
+    var trimmed = rawUrl.trim();
+
+    final baseUri = Uri.parse(baseUrl);
+    final origin = baseUri.hasPort
+        ? '${baseUri.scheme}://${baseUri.host}:${baseUri.port}'
+        : '${baseUri.scheme}://${baseUri.host}';
+
+    // Route storage files through /api/v1/storage/ so it is served by Laravel with CORS headers
+    if (trimmed.contains('/storage/') && !trimmed.contains('/api/v1/storage/')) {
+      trimmed = trimmed.replaceFirst('/storage/', '/api/v1/storage/');
+    }
+
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+      final parsed = Uri.parse(trimmed);
+      // If the backend returns localhost/127.0.0.1 but the app connects via Android emulator or custom host
+      if ((parsed.host == 'localhost' || parsed.host == '127.0.0.1') &&
+          (baseUri.host != 'localhost' && baseUri.host != '127.0.0.1')) {
+        return parsed
+            .replace(
+              scheme: baseUri.scheme,
+              host: baseUri.host,
+              port: baseUri.hasPort ? baseUri.port : parsed.port,
+            )
+            .toString();
+      }
+      return trimmed;
+    }
+
+    if (trimmed.startsWith('/api/v1/storage/')) {
+      return '$origin$trimmed';
+    }
+    if (trimmed.startsWith('api/v1/storage/')) {
+      return '$origin/$trimmed';
+    }
+
+    final cleanPath = trimmed.startsWith('/') ? trimmed : '/$trimmed';
+    return '$origin/api/v1/storage$cleanPath';
+  }
+
   // Endpoints
   static const String posts = '/posts';
   static const String pages = '/pages';

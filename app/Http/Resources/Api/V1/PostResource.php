@@ -4,7 +4,6 @@ namespace App\Http\Resources\Api\V1;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
 class PostResource extends JsonResource
 {
@@ -21,7 +20,7 @@ class PostResource extends JsonResource
             'slug' => $this->slug,
             'summary' => $this->summary,
             'content' => $this->content,
-            'image' => $this->image ? Storage::disk('public')->url($this->image) : null,
+            'image' => $this->image ? url('api/v1/storage/'.$this->image) : null,
             'status' => $this->status?->value ?? $this->status,
             'published_at' => $this->published_at?->toISOString(),
             'view_count' => (int) $this->view_count,
@@ -30,7 +29,7 @@ class PostResource extends JsonResource
             'author' => [
                 'id' => $this->user?->id,
                 'name' => $this->user?->name,
-                'avatar' => $this->user?->avatar ? Storage::disk('public')->url($this->user->avatar) : null,
+                'avatar' => $this->user?->avatar ? url('api/v1/storage/'.$this->user->avatar) : null,
             ],
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),

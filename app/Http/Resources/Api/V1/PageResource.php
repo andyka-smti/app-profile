@@ -4,7 +4,6 @@ namespace App\Http\Resources\Api\V1;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
 class PageResource extends JsonResource
 {
@@ -20,7 +19,7 @@ class PageResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'content' => $this->content,
-            'image' => $this->image ? Storage::disk('public')->url($this->image) : null,
+            'image' => $this->image ? url('api/v1/storage/'.$this->image) : null,
             'sort_order' => (int) $this->sort_order,
             'show_in_menu' => (bool) $this->show_in_menu,
             'created_at' => $this->created_at?->toISOString(),

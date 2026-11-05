@@ -41,6 +41,7 @@ class PostSeeder extends Seeder
                     'en' => '<p>We are pleased to announce that enrollment for new students is officially open starting this month. Prospective students are expected to prepare the required documents, such as report cards, birth certificates, and family cards.</p><p>Registration can be completed online via the official portal or in person at the admissions secretariat in the main building.</p>',
                 ],
                 'category' => 'Pengumuman',
+                'image' => 'posts/post1.jpg',
                 'is_featured' => true,
             ],
             [
@@ -58,6 +59,7 @@ class PostSeeder extends Seeder
                     'en' => '<p>A proud achievement was once again recorded by our school contingent at the provincial Student Competency Competition (LKS). Through hard work and dedicated teacher mentoring, our student successfully secured the gold medal in Web Technologies.</p><p>The principal expressed highest appreciation to all parties supporting the team.</p>',
                 ],
                 'category' => 'Prestasi',
+                'image' => 'posts/post2.jpg',
                 'is_featured' => true,
             ],
             [
@@ -75,6 +77,7 @@ class PostSeeder extends Seeder
                     'en' => '<p>The school organized an entrepreneurship workshop attended by distinguished practitioners from top industries. This event aims to equip students with in-depth insights into the modern workplace ecosystem and self-enterprise opportunities.</p>',
                 ],
                 'category' => 'Kegiatan',
+                'image' => 'posts/post3.jpg',
                 'is_featured' => false,
             ],
             [
@@ -92,6 +95,7 @@ class PostSeeder extends Seeder
                     'en' => '<p>The swift rise of artificial intelligence significantly impacts education. Educators and learners alike must foster critical thinking to filter and utilize information responsibly.</p>',
                 ],
                 'category' => 'Artikel Edukasi',
+                'image' => 'posts/post4.jpg',
                 'is_featured' => false,
             ],
         ];
@@ -111,6 +115,7 @@ class PostSeeder extends Seeder
                     'published_at' => now(),
                     'view_count' => rand(25, 200),
                     'is_featured' => $data['is_featured'],
+                    'image' => $data['image'] ?? null,
                 ]
             );
         }
